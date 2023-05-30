@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://bootswatch.com/5/lux/bootstrap.min.css"
+    />
+    <style>
+      .taskDone {
+        text-decoration: line-through;
+      }
+    </style>
+    <title>TaskApp Vue.js🚀</title>
+  </head>
+  <body>
+    <!-- vuejs componente -->
+    <div class="container mt-5">
+      <div id="taskApp" class="col-sm-8 offset-2">
+        <h1>{{nameApp}}</h1>
+
+        <!-- add task fomr-->
+        <form v-on:submit="addTask" class="mb-2">
+          <input
+            type="text"
+            v-model="tasks.title"
+            class="form-control text-center"
+            required
+            placeholder="Agregar una nueva tarea"
+          />
+          <input
+            type="submit"
+            value="Agregar tarea"
+            class="btn w-100 btn-success"
+          />
+        </form>
+
+        <table class="table">
+          <thead>
+            <tr class="text-center">
+              <th>Hecho!✅</th>
+              <th>Tarea✏️</th>
+              <th>Eliminar🗑️</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="task in tasks" class="text-center">
+              <td><input type="checkbox" v-model="task.done" /></td>
+              <td v-bind:class="{taskDone:task.done}" class="fst-italic">
+                {{task.title}}
+              </td>
+              <td>
+                <button class="btn btn-danger" v-on:click="deleteTask(task)">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- empty table tasks -->
+        <p
+          v-if="!tasks.length > 0"
+          class="text-bg-secondary text-center fw-bold opacity-75"
+        >
+          🤓Crea tú primera tarea!
+        </p>
+      </div>
+    </div>
+    <script type="module">
+      import Vue from "https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.esm.browser.js";
+
+      new Vue({
+        el: "#taskApp",
+        data: {
+          nameApp: "Tareas Vue.js",
+          tasks: [
+            {
+              title: "task 1",
+              done: false,
+            },
+            {
+              title: "task 2",
+              done: false,
+            },
+            {
+              title: "task 3",
+              done: false,
+            },
+            {
+              title: "task 4",
+              done: false,
+            },
+          ],
+        },
+        methods: {
+          // delete task by id
+          deleteTask(task) {
+            let index = this.tasks.indexOf(task);
+            this.tasks.splice(index, 1);
+          },
+
+          // add news tasks
+          addTask(e) {
+            e.preventDefault();
+            // saved new task
+            let newTask = {
+              title: this.tasks.title,
+              done: false,
+            };
+            // insert new task
+            this.tasks.push(newTask);
+            // reset input form
+            this.tasks.title = "";
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
